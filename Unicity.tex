@@ -681,14 +681,15 @@ To enable this mobility, agents operate within a standardized \textbf{Agentic Ru
 
 \begin{enumerate}
     \item \textbf{Executable instance (the agent):}
-    Technically, an agent is a sandboxed computation (e.g., a Docker container or VM) that exposes two core procedures:
+    Technically, an agent is a sandboxed computation (e.g., a Docker container or VM) that exposes three items:
     \begin{itemize}
-        \item \texttt{Execute(state, input) $\rightarrow$ new\_state}:
-        The logic defining state transitions.
+        \item A definition of the state transition logic.
 
-        \item \texttt{Verify(state, input, new\_state) $\rightarrow$ Boolean}:
-        The logic allowing third parties to validate transitions.
+        \item A definition of the execution proof verification logic.
+
+        \item An entry point that accepts the inputs, executes the computation, and returns the outputs along with a proof of correct execution.
     \end{itemize}
+    The users/clients use the first definition to determine whether the agent will perform the actions they want, then call the entry point with their inpus, and finally verify the correctness of the computed outputs by feeding the defintion of the computation, the inputs, the outputs, and the proof to the verification logic. Note that the verification step is executed by the callers themselves, so they can rely on this being done correctly.
 
     \item \textbf{Host-independent storage:}
     Agents do not rely on a host's local file system for persistence. Instead, the runtime interfaces with decentralized storage layers to pin and retrieve Unicity tokens. These tokens effectively act as the agent's hard drive, carrying its state history and assets in a portable, verifiable format.
